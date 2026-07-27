@@ -1,8 +1,13 @@
 package br.com.igorbag.githubsearch.ui.adapter
 
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import br.com.igorbag.githubsearch.R
 import br.com.igorbag.githubsearch.domain.Repository
@@ -10,47 +15,41 @@ import br.com.igorbag.githubsearch.domain.Repository
 class RepositoryAdapter(private val repositories: List<Repository>) :
     RecyclerView.Adapter<RepositoryAdapter.ViewHolder>() {
 
-    var carItemLister: (Repository) -> Unit = {}
+    var repositoryList: (Repository) -> Unit = {}
     var btnShareLister: (Repository) -> Unit = {}
 
-    // Cria uma nova view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.repository_item, parent, false)
         return ViewHolder(view)
     }
 
-    // Pega o conteudo da view e troca pela informacao de item de uma lista
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //@TODO 8 -  Realizar o bind do viewHolder
-        //Exemplo de Bind
-        //  holder.preco.text = repositories[position].atributo
+        holder.textRepoName.text = repositories[position].name
 
-        // Exemplo de click no item
-        //holder.itemView.setOnClickListener {
-        // carItemLister(repositores[position])
-        //}
+        holder.btnRepo.setOnClickListener {
+          btnShareLister(repositories[position])
+        }
 
-        // Exemplo de click no btn Share
-        //holder.favorito.setOnClickListener {
-        //    btnShareLister(repositores[position])
-        //}
+        holder.viewRepo.setOnClickListener {
+          repositoryList(repositories[position])
+        }
     }
 
-    // Pega a quantidade de repositorios da lista
-    //@TODO 9 - realizar a contagem da lista
-    override fun getItemCount(): Int = 0
+    override fun getItemCount(): Int = repositories.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        //@TODO 10 - Implementar o ViewHolder para os repositorios
-        //Exemplo:
-        //val atributo: TextView
+      val textRepoName: TextView
+      val btnRepo: ImageView
+      val viewRepo: ConstraintLayout
 
-        //init {
-        //    view.apply {
-        //        atributo = findViewById(R.id.item_view)
-        //    }
-
+      init {
+        view.apply {
+          textRepoName = findViewById(R.id.tv_preco)
+          btnRepo = findViewById<ImageView>(R.id.iv_favorite)
+          viewRepo = findViewById(R.id.cl_card_content)
+        }
+      }
     }
 }
 
